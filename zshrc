@@ -28,3 +28,14 @@ if [[ $- =~ i ]]; then
     cond_source $HOME/.zsh/local/$what.sh
   done
 fi
+
+
+_MODULE_INIT_PATH='/app/Modules/3.2.10/init/zsh'
+if [ -f $_MODULE_INIT_PATH ]; then
+  source $_MODULE_INIT_PATH
+fi
+unset $_MODULE_INIT_PATH
+
+module -v use ${MATSENGRP}/modules
+module -v use $HOME/modules
+module load matsengrp-local
