@@ -7,8 +7,10 @@ This will proceed from simple and straightforward uses and configurations to mor
 ## Finding things
 
 With desktop OS's, we are used to being able to see where we are and search easily by filenames.
-Let's see some linux commands to stay oriented:
+Let's see some linux commands to stay oriented.
 
+
+### tree
 The `tree` command shows the nested directory structure as a tree:
 ```
 .
@@ -26,6 +28,50 @@ This can get pretty lengthy when we have a big directory tree, so we can limit i
 └── one
     └── two
 ```
+
+
+### find
+
+[GNU Find](https://www.gnu.org/software/findutils/manual/html_mono/find.html) is an incredibly powerful command.
+It is complex enough to get its own [Wikipedia page](https://en.wikipedia.org/wiki/Find), which in fact has a nice collection of examples.
+
+I pretty much just use it for a few simple things, illustrated by the following examples:
+
+* `find .`: list all files and directories descending from the current one
+* `find some/directory -name "*.py"`: find all files and directories in descending from `some/directory` ending in `.py`
+* `find . -name "*nofonts.svg" -exec /bin/rm {} \;`: remove every file ending in `nofonts.svg` contained in the current directory.
+
+
+### grep
+
+Moving on to finding files by their content, the first step is the classic `grep`.
+
+To find occurrences of the string "smooshable" in any file contained in the current directory, just write
+
+```
+grep -R smooshable
+```
+
+where the `-R` is for recursive search across the directory tree.
+
+I don't actually use recursive grep much.
+If I'm looking for something in a git repository I use `git grep`:
+
+```
+git grep smooshable
+```
+
+which is tidier because it doesn't find things in the `.git` directory, etc.
+
+If I have a lot of big files to search through, [ag, the silver searcher](https://github.com/ggreer/the_silver_searcher) is a great tool.
+It searches recursively by default, so in this example
+
+```
+ag smooshable
+```
+
+will get you a nicely formatted list of instances.
+Note that ag also has lots of nice editor integrations.
 
 
 
@@ -52,7 +98,7 @@ First a few little tricks:
 * `cd -`: moves you back to your previous location
 
 
-## Advanced topic: fuzzy finding
+## Fuzzy finding
 
 We all love tab completion.
 But sometimes it too can be painful.
@@ -78,10 +124,10 @@ Consider this list of files, which is the various posts that have appeared on fr
 to tab-complete through these files is a pain, because I actually want to say something about the content, which is past the date.
 
 Thus we can use _fuzzy finding_, which allows us to use arbitrary substrings to find what I want.
-This is available in GitHub for finding files, and actually even in the Chrome address bar.
+This is available [in GitHub](https://github.com/blog/793-introducing-the-file-finder) for finding files, and actually even in the Chrome address bar.
 With fuzzy finding, you can just type substrings of your desired string and the matcher will find items that contain those substrings.
 
-For example, if I want the posts from 2015 that contain `galaxy`, I could type `2015galaxy`, and boom:
+For example, if I want the posts from 2015 that contain `galaxy`, I could type `2015galaxy`, and :boom:
 
 ```
   2015-03-12-rollout-galaxy-101.md
