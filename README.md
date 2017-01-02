@@ -6,7 +6,7 @@ This will proceed from simple and straightforward uses and configurations to mor
 
 ## Finding things
 
-With desktop OS's, we are used to being able to see where we are and search easily by filenames.
+With desktop OS's, we are used to being able to see where we are and search easily by filenames and content.
 Let's see some linux commands to stay oriented.
 
 
@@ -35,7 +35,7 @@ This can get pretty lengthy when we have a big directory tree, so we can limit i
 [GNU Find](https://www.gnu.org/software/findutils/manual/html_mono/find.html) is an incredibly powerful command.
 It is complex enough to get its own [Wikipedia page](https://en.wikipedia.org/wiki/Find), which in fact has a nice collection of examples.
 
-I pretty much just use it for a few simple things, illustrated by the following examples:
+I mostly just use it for a few simple things, illustrated by the following examples:
 
 * `find .`: list all files and directories descending from the current one
 * `find some/directory -name "*.py"`: find all files and directories in descending from `some/directory` ending in `.py`
@@ -74,6 +74,16 @@ will get you a nicely formatted list of instances.
 Note that ag also has lots of nice editor integrations.
 
 
+## Terminal multiplexing
+
+When working on a modern desktop computer, it's easy to arrange multiple windows side by side, to switch between applications, etc.
+On the command line this is achieved by use of a "terminal multiplexer".
+This is absolutely essential for working on remote machines.
+
+We've covered this in detail [in our bioinformatics intro class slides](http://fredhutchio.github.io/intro-bioinformatics/01-gestalt.html#/tmux---terminal-multiplexer)
+and in an [intro article](http://www.fredhutch.io/articles/2014/04/27/terminal-multiplex/)
+so I'm not going to go into detail beyond that.
+
 
 ## History
 
@@ -84,9 +94,46 @@ Here are some commands to help you browse that history:
 * `history | less`: history made more navigable
 
 You can also search through your history.
-Hitting `Ctrl-R` brings up reverse interactive search.
+Hitting `Ctrl-r` brings up reverse interactive search.
+In this example, I typed `tags`, which brings up the most recent command containing the string `tags`:
+```
+$ git describe --tags --long
+bck-i-search: tags_
+```
+You can cycle through earlier commands by hitting `Ctrl-r` again.
+If you want to cancel your reverse search, use `Ctrl-g`.
 
-If you want to cancel your reverse search, use `Ctrl-G`.
+
+## Interacting with the web
+
+To get something off the web, use `wget` and then the web address.
+This is handy in combination with the "raw" address for files on GitHub (available as a button on the right hand side of a file's page), e.g.:
+```
+wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+```
+
+Another related tool is [curl](https://curl.haxx.se/docs/manual.html), which is quite powerful.
+
+If you actually have to interact with the web via the command line, you can always use `lynx`.
+If you want to watch nyan cat, you can do so by executing `telnet nyancat.dakko.us`.
+
+
+## Git prompt
+
+I don't mind what shells or editors people in my group use, but I really feel strongly that everyone should use a shell prompt that displays information about git status.
+Not having this inevitably leads to confusion with partial commits.
+
+The git folks understand this and have made a [git prompt script](https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh).
+Bash folks: you can grab this using the wget command above, move it to `/.git-prompt.sh`, and throw this in your `.bashrc`:
+```
+source ~/.git-prompt.sh
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWUNTRACKEDFILES=1
+PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+```
+
+If you use zsh you probably have all of this configured, but I'd suggest trying out [antigen](https://github.com/zsh-users/antigen) which has a plugin system making all this trivial.
+
 
 
 ## Moving around
@@ -96,6 +143,10 @@ First a few little tricks:
 
 * `cd`: moves you back to your home directory
 * `cd -`: moves you back to your previous location
+
+But still, getting deep in a directory tree takes a lot of typing and/or tab completion.
+For this reason, I use [autojump](https://github.com/wting/autojump), which remembers where you've been so you can move around more quickly.
+Before you install that tool, though, take a look at the next section, which also offers a faster way to navigate deep in directory trees.
 
 
 ## Fuzzy finding
