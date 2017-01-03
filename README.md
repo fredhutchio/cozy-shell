@@ -98,6 +98,10 @@ so I'm not going to go into detail beyond that.
 ## History
 
 Your "history" is the list of commands you have entered.
+The easiest way to get back in your history is just to hit the up arrow.
+Repeatedly hitting up arrow will take you back in time, while down arrow takes you forward in time.
+When we see a command that we like, we can hit `Return` to execute that command, or use the left and right arrow keys to move to a place where we can edit it.
+
 Here are some commands to help you browse that history:
 * `history`: gives the full history; likely to be too much too be useful
 * `history | tail`: the history truncated to the most recent commands
@@ -123,6 +127,23 @@ export HISTSIZE=
 ```
 
 Note that [this isn't a perfect solution and a better one exists](http://superuser.com/a/664061), but it's good enough.
+
+### The last word in history
+
+There is a very handy trick to go cycle through the last words in your history.
+Say I'm doing the following:
+```
+git add horribly/long/path/to/file.txt
+git status
+```
+and now I remember I wanted to make one more modification to `horribly/long/path/to/file.txt`.
+The easiest thing is probably to hit the up arrow two times and then replace `git add` with an invocation of an editor.
+
+But there's something slicker.
+`Alt-.` cycles through the previous last words in the command history and puts them on the command line.
+In this example, I could say `vi ` `Alt-.` `Alt-.` and `vi horribly/long/path/to/file.txt` would result.
+
+For the OS X fans out there, you will use `Option` in place of `Alt`, which may require [some configuration](http://osxdaily.com/2013/02/01/use-option-as-meta-key-in-mac-os-x-terminal/) (note `Meta` is another name for `Alt` in this context).
 
 
 ## Interacting with the web
