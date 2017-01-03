@@ -47,7 +47,7 @@ It is complex enough to get its own [Wikipedia page](https://en.wikipedia.org/wi
 
 I mostly just use it for a few simple things, illustrated by the following examples:
 
-* `find .`: list all files and directories descending from the current one
+* `find .`: list all files and directories descending from the current one (recall that `.` is the current directory)
 * `find some/directory -name "*.py"`: find all files and directories in descending from `some/directory` ending in `.py`
 * `find . -name "*nofonts.svg" -exec /bin/rm {} \;`: remove every file ending in `nofonts.svg` contained in the current directory.
 
@@ -122,7 +122,7 @@ export HISTFILESIZE=
 export HISTSIZE=
 ```
 
-Note that [this isn't a perfect solution and a better one exists](http://superuser.com/a/664061), but it's a pretty good solution.
+Note that [this isn't a perfect solution and a better one exists](http://superuser.com/a/664061), but it's good enough.
 
 
 ## Interacting with the web
@@ -145,7 +145,7 @@ I don't mind what shells or editors people in my group use, but I really feel st
 Not having this inevitably leads to confusion with partial commits.
 
 The git folks understand this and have made a [git prompt script](https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh).
-Bash folks: you can grab this using the wget command above, move it to `/.git-prompt.sh`, and throw this in your `.bashrc`:
+Bash folks: you can grab this using the wget command above, move it to `~/.git-prompt.sh`, and throw this in your `.bashrc`:
 ```
 source ~/.git-prompt.sh
 export GIT_PS1_SHOWDIRTYSTATE=1
@@ -225,7 +225,7 @@ You can do all sorts of fancy things, but to get started the three basic command
 
 Vi is a wonderful, powerful, but completely arcane editor.
 It's worth being able to use because even the sparsest linux install will have some variant of vi.
-Also, when working with remote machines, it's nice to be able to edit text in a powerful editor.
+Also, when working with remote machines, it's nice to be able to edit text in a powerful editor directly on that machine.
 Finally, sometimes another program (e.g. git) will plop you into vim without you realizing it, so it's nice to know what to do in this situation.
 
 Your first encounter with vi is likely to mostly be concerned with how to exit.
@@ -235,7 +235,7 @@ So, here we go (you can execute `vi` at the command line to test this out in a v
 
 * Hit `Esc` to leave insert mode
 * Type `:q`
-* If that didn't work, and if you see `[Command Line]` at the bottom of your window then hit return then `:q`.
+* If that didn't work, and if you see `[Command Line]` at the bottom of your window then hit `Return` then `:q`.
 * If it says "No write since last change", then it's asking if you want to save. If you do want to save, type `:wq`, and if not, `:q!`.
 
 ### The simplest vi session
