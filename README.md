@@ -1,7 +1,6 @@
 # cozy-shell
 
 How to be comfortable in the shell.
-This will proceed from simple and straightforward uses and configurations to more advanced ones.
 
 
 ## Finding things
@@ -33,6 +32,7 @@ This can get pretty lengthy when we have a big directory tree, so we can limit i
 ### find
 
 [GNU Find](https://www.gnu.org/software/findutils/manual/html_mono/find.html) is an incredibly powerful command.
+It is generally used for finding files by their characteristics, such as name or size, rather than by their contents (more on that later).
 It is complex enough to get its own [Wikipedia page](https://en.wikipedia.org/wiki/Find), which in fact has a nice collection of examples.
 
 I mostly just use it for a few simple things, illustrated by the following examples:
@@ -42,7 +42,7 @@ I mostly just use it for a few simple things, illustrated by the following examp
 * `find . -name "*nofonts.svg" -exec /bin/rm {} \;`: remove every file ending in `nofonts.svg` contained in the current directory.
 
 
-### grep
+### grep & friends
 
 Moving on to finding files by their content, the first step is the classic `grep`.
 
@@ -78,77 +78,11 @@ Note that ag also has lots of nice editor integrations.
 
 When working on a modern desktop computer, it's easy to arrange multiple windows side by side, to switch between applications, etc.
 On the command line this is achieved by use of a "terminal multiplexer".
-This is absolutely essential for working on remote machines.
+This is absolutely essential for working on remote machines, where one can detach and re-attach sessions with all their attendant windows.
 
 We've covered this in detail [in our bioinformatics intro class slides](http://fredhutchio.github.io/intro-bioinformatics/01-gestalt.html#/tmux---terminal-multiplexer)
 and in an [intro article](http://www.fredhutch.io/articles/2014/04/27/terminal-multiplex/)
 so I'm not going to go into detail beyond that.
-
-
-## Making peace with vi
-
-Vi is a wonderful, powerful, but completely arcane editor.
-It's worth being able to use because even the sparsest linux install will have some variant of vi.
-Your first encounter with vi is likely to mostly be concerned with how to exit.
-So, here we go:
-
-### Exiting vi
-
-* Hit `Esc` to leave insert mode
-* Type `:q`
-* If that didn't work, and if you see `[Command Line]` at the bottom of your window then hit return then `:q`.
-* If it says "No write since last change", then it's asking if you want to save. If you do want to save, type `:wq`, and if not, `:q!`.
-
-### The simplest vi session
-
-Now, say you have a single file and want to make a simple modification to it.
-
-* Invoke vi with `vi my-file.txt`
-* Type 'i' to enter insert mode
-* Move around with your arrow keys, editing as needed
-* When you like some edits, hit `Esc` to exit insert mode and type `:w` to save
-* When you are done editing, type `:q`
-
-That wasn't so bad, was it?
-
-### Using the command mode
-
-So far the only real action has been in insert mode.
-The other mode in vi is the command mode.
-This is the mode that you use to quickly navigate and modify your file.
-
-Also, I'm going to assume now that you have [vim](http://www.vim.org/) installed, which is a safe assumption (generally `vi` redirects you to `vim`).
-
-#### Moving around quickly
-
-There are lots of ways to move around beyond the arrow keys, but I'm just going to describe three:
-
-* `0` moves to the beginning of the line, and `$` moves to the end of the line
-* `b` moves back one word, and `w` moves forward one word
-* `{` moves back one paragraph, and `}` moves forward one paragraph
-
-You can prefix these commands with numbers to move faster, e.g. `3w` moves you forward three words.
-If you want more, see the documentation, [this wallpaper](https://github.com/LevelbossMike/vim_shortcut_wallpaper) and [this poster](http://vimcheatsheet.com/).
-
-#### Cutting and pasting
-
-There is a simple way to cut and paste using vim which is exactly analogous to a word processor: highlight a block of text, then copy or cut, then paste.
-
-* Move to where you want to start your highlight
-* Press `v`
-* Move to the end of your highlighted region
-* Press `d` to cut, `y` to copy
-* Move to where you want to paste
-* Press `p` to paste
-* If you mess anything up, `u` is undo and `Ctrl-r` is redo
-
-You can also cut and paste using `d` and `y` directly (e.g. `dw` cuts a word); `dd` and `yy` cuts and copies a line.
-
-#### Vim resources
-
-* [Ben Crowder's vim tips](http://bencrowder.net/files/vim-fu/)
-* The `vimtutor` command, available wherever you find `vim`
-* [an online vim tutorial](http://www.openvim.com/)
 
 
 ## History
@@ -180,6 +114,7 @@ export HISTSIZE=
 
 Note that [this isn't a perfect solution and a better one exists](http://superuser.com/a/664061), but it's a pretty good solution.
 
+
 ## Interacting with the web
 
 To get something off the web, use `wget` and then the web address.
@@ -209,7 +144,6 @@ PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
 ```
 
 If you use zsh you probably have all of this configured, but I'd suggest trying out [antigen](https://github.com/zsh-users/antigen) which has a plugin system making all this trivial.
-
 
 
 ## Moving around
@@ -275,3 +209,72 @@ You can do all sorts of fancy things, but to get started the three basic command
 * `Ctrl-t` finds files
 * `Ctrl-r` does reverse search on your history
 * `Alt-c` finds and enters directories
+
+
+## Making friends with vi
+
+Vi is a wonderful, powerful, but completely arcane editor.
+It's worth being able to use because even the sparsest linux install will have some variant of vi.
+Your first encounter with vi is likely to mostly be concerned with how to exit.
+So, here we go:
+
+### Exiting vi
+
+* Hit `Esc` to leave insert mode
+* Type `:q`
+* If that didn't work, and if you see `[Command Line]` at the bottom of your window then hit return then `:q`.
+* If it says "No write since last change", then it's asking if you want to save. If you do want to save, type `:wq`, and if not, `:q!`.
+
+### The simplest vi session
+
+Now, say you have a single file and want to make a simple modification to it.
+
+* Invoke vi with `vi my-file.txt`
+* Type `i` to enter insert mode
+* Move around with your arrow keys, editing as needed
+* When you like some edits, hit `Esc` to exit insert mode and type `:w` to save
+* When you are done editing, type `:q`
+
+That wasn't so bad, was it?
+
+### Using the command mode
+
+So far the only real action has been in insert mode.
+The other mode in vi is the command mode.
+This is the mode that you use to quickly navigate and modify your file.
+
+Also, I'm going to assume now that you have [vim](http://www.vim.org/) installed, which is a safe assumption (generally `vi` redirects you to `vim`).
+
+#### Moving around quickly
+
+There are lots of ways to move around beyond the arrow keys, but I'm just going to describe three:
+
+* `0` moves to the beginning of the line, and `$` moves to the end of the line
+* `b` moves back one word, and `w` moves forward one word
+* `{` moves back one paragraph, and `}` moves forward one paragraph
+
+You can prefix these commands with numbers to move faster, e.g. `3w` moves you forward three words.
+If you want more, see the documentation, [this wallpaper](https://github.com/LevelbossMike/vim_shortcut_wallpaper) and [this poster](http://vimcheatsheet.com/).
+
+#### Cutting and pasting
+
+There is a simple way to cut and paste using vim which is exactly analogous to a word processor: highlight a block of text, then copy or cut, then paste.
+
+* Move to where you want to start your highlight
+* Press `v`
+* Move to the end of your highlighted region
+* Press `d` to cut, `y` to copy
+* Move to where you want to paste
+* Press `p` to paste
+* If you mess anything up, `u` is undo and `Ctrl-r` is redo
+
+You can also cut and paste using `d` and `y` directly (e.g. `dw` cuts a word); `dd` and `yy` cuts and copies a line.
+
+#### Vim resources
+
+* [Ben Crowder's vim tips](http://bencrowder.net/files/vim-fu/)
+* The `vimtutor` command, available wherever you find `vim`
+* [An online vim tutorial](http://www.openvim.com/)
+
+Note that these guides insist that you can't use the arrow keys.
+You certainly can, though it's not considered hip (because vim is all about efficiency, and moving your hands from home position to the arrow keys is not efficient.)
