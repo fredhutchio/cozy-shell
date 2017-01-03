@@ -153,6 +153,7 @@ This is handy in combination with the "raw" address for files on GitHub (availab
 ```
 wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 ```
+If the URL contains special characters (like `?` or `&`) you'll want to surround the URL with double quotes.
 
 Another related tool is [curl](https://curl.haxx.se/docs/manual.html), which is quite powerful.
 
