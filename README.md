@@ -85,6 +85,72 @@ and in an [intro article](http://www.fredhutch.io/articles/2014/04/27/terminal-m
 so I'm not going to go into detail beyond that.
 
 
+## Making peace with vi
+
+Vi is a wonderful, powerful, but completely arcane editor.
+It's worth being able to use because even the sparsest linux install will have some variant of vi.
+Your first encounter with vi is likely to mostly be concerned with how to exit.
+So, here we go:
+
+### Exiting vi
+
+* Hit `Esc` to leave insert mode
+* Type `:q`
+* If that didn't work, and if you see `[Command Line]` at the bottom of your window then hit return then `:q`.
+* If it says "No write since last change", then it's asking if you want to save. If you do want to save, type `:wq`, and if not, `:q!`.
+
+### The simplest vi session
+
+Now, say you have a single file and want to make a simple modification to it.
+
+* Invoke vi with `vi my-file.txt`
+* Type 'i' to enter insert mode
+* Move around with your arrow keys, editing as needed
+* When you like some edits, hit `Esc` to exit insert mode and type `:w` to save
+* When you are done editing, type `:q`
+
+That wasn't so bad, was it?
+
+### Using the command mode
+
+So far the only real action has been in insert mode.
+The other mode in vi is the command mode.
+This is the mode that you use to quickly navigate and modify your file.
+
+Also, I'm going to assume now that you have [vim](http://www.vim.org/) installed, which is a safe assumption (generally `vi` redirects you to `vim`).
+
+#### Moving around quickly
+
+There are lots of ways to move around beyond the arrow keys, but I'm just going to describe three:
+
+* `0` moves to the beginning of the line, and `$` moves to the end of the line
+* `b` moves back one word, and `w` moves forward one word
+* `{` moves back one paragraph, and `}` moves forward one paragraph
+
+You can prefix these commands with numbers to move faster, e.g. `3w` moves you forward three words.
+If you want more, see the documentation, [this wallpaper](https://github.com/LevelbossMike/vim_shortcut_wallpaper) and [this poster](http://vimcheatsheet.com/).
+
+#### Cutting and pasting
+
+There is a simple way to cut and paste using vim which is exactly analogous to a word processor: highlight a block of text, then copy or cut, then paste.
+
+* Move to where you want to start your highlight
+* Press `v`
+* Move to the end of your highlighted region
+* Press `d` to cut, `y` to copy
+* Move to where you want to paste
+* Press `p` to paste
+* If you mess anything up, `u` is undo and `Ctrl-r` is redo
+
+You can also cut and paste using `d` and `y` directly (e.g. `dw` cuts a word); `dd` and `yy` cuts and copies a line.
+
+#### Vim resources
+
+* [Ben Crowder's vim tips](http://bencrowder.net/files/vim-fu/)
+* The `vimtutor` command, available wherever you find `vim`
+* [an online vim tutorial](http://www.openvim.com/)
+
+
 ## History
 
 Your "history" is the list of commands you have entered.
@@ -103,6 +169,16 @@ bck-i-search: tags_
 You can cycle through earlier commands by hitting `Ctrl-r` again.
 If you want to cancel your reverse search, use `Ctrl-g`.
 
+It appears that OS X truncates your history at a measly 500 lines.
+Phooey on that!
+Put this in your `.bashrc` to get an unlimited history:
+
+```
+export HISTFILESIZE=
+export HISTSIZE=
+```
+
+Note that [this isn't a perfect solution and a better one exists](http://superuser.com/a/664061), but it's a pretty good solution.
 
 ## Interacting with the web
 
