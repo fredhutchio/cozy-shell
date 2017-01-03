@@ -1,6 +1,7 @@
 # cozy-shell
 
 How to be comfortable in the shell.
+This guide is intended for people who already use the shell, and want to make their experience more comfortable and convenient.
 
 * [Finding things](#finding-things)
 * [Terminal multiplexing](#terminal-multiplexing)
@@ -224,8 +225,8 @@ You can do all sorts of fancy things, but to get started the three basic command
 
 Vi is a wonderful, powerful, but completely arcane editor.
 It's worth being able to use because even the sparsest linux install will have some variant of vi.
-And when working with servers over SSH frequently, it's nice to be able to edit text in a powerful editor that can stay alive in your tmux session.
-Finally, sometimes another program will plop you into vim without you realizing it, so it's nice to know what to do in this situation.
+Also, when working with remote machines, it's nice to be able to edit text in a powerful editor.
+Finally, sometimes another program (e.g. git) will plop you into vim without you realizing it, so it's nice to know what to do in this situation.
 
 Your first encounter with vi is likely to mostly be concerned with how to exit.
 So, here we go (you can execute `vi` at the command line to test this out in a vi session):
@@ -281,7 +282,7 @@ There is a simple way to cut and paste using vim which is exactly analogous to a
 
 You can also cut and paste using `d` and `y` together with a motion key (e.g. `dw` cuts a word, and `d2w` cuts two); `dd` and `yy` cut or copy an entire line, respectively.
 
-### Undo/redo
+#### Undo/redo
 
 If you ever mess anything up (which is easy to do in command mode), `u` is undo and `Ctrl-r` is redo (from command mode).
 
@@ -293,4 +294,3 @@ If you ever mess anything up (which is easy to do in command mode), `u` is undo 
 
 Note that these guides insist that you can't use the arrow keys.
 You certainly can, though it's not considered hip (because vim is all about efficiency, and moving your hands from home position to the arrow keys is not efficient.)
-When you're ready to guzzle the coolaid, you can start using `j` and `k` for up/down, and `h` and `l` for left right (note that these keys are all on the resting "home-position" of your right hand, maing them fast to use).
