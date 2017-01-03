@@ -2,6 +2,15 @@
 
 How to be comfortable in the shell.
 
+* [Finding things](#finding-things)
+* [Terminal multiplexing](#terminal-multiplexing)
+* [History](#history)
+* [Interacting with the web](#interacting-with-the-web)
+* [Git prompt](#git-prompt)
+* [Moving around](#moving-around)
+* [Fuzzy finding](#fuzzy-finding)
+* [Making friends with vi (and vim)](#making-friends-with-vi-and-vim)
+
 
 ## Finding things
 
@@ -211,12 +220,15 @@ You can do all sorts of fancy things, but to get started the three basic command
 * `Alt-c` finds and enters directories
 
 
-## Making friends with vi
+## Making friends with vi and vim
 
 Vi is a wonderful, powerful, but completely arcane editor.
 It's worth being able to use because even the sparsest linux install will have some variant of vi.
+And when working with servers over SSH frequently, it's nice to be able to edit text in a powerful editor that can stay alive in your tmux session.
+Finally, sometimes another program will plop you into vim without you realizing it, so it's nice to know what to do in this situation.
+
 Your first encounter with vi is likely to mostly be concerned with how to exit.
-So, here we go:
+So, here we go (you can execute `vi` at the command line to test this out in a vi session):
 
 ### Exiting vi
 
@@ -241,7 +253,7 @@ That wasn't so bad, was it?
 
 So far the only real action has been in insert mode.
 The other mode in vi is the command mode.
-This is the mode that you use to quickly navigate and modify your file.
+In this mode you can quickly navigate and modify your file using key commands.
 
 Also, I'm going to assume now that you have [vim](http://www.vim.org/) installed, which is a safe assumption (generally `vi` redirects you to `vim`).
 
@@ -261,14 +273,17 @@ If you want more, see the documentation, [this wallpaper](https://github.com/Lev
 There is a simple way to cut and paste using vim which is exactly analogous to a word processor: highlight a block of text, then copy or cut, then paste.
 
 * Move to where you want to start your highlight
-* Press `v`
+* Press `v` (this places you in "visual mode")
 * Move to the end of your highlighted region
 * Press `d` to cut, `y` to copy
 * Move to where you want to paste
 * Press `p` to paste
-* If you mess anything up, `u` is undo and `Ctrl-r` is redo
 
-You can also cut and paste using `d` and `y` directly (e.g. `dw` cuts a word); `dd` and `yy` cuts and copies a line.
+You can also cut and paste using `d` and `y` together with a motion key (e.g. `dw` cuts a word, and `d2w` cuts two); `dd` and `yy` cut or copy an entire line, respectively.
+
+### Undo/redo
+
+If you ever mess anything up (which is easy to do in command mode), `u` is undo and `Ctrl-r` is redo (from command mode).
 
 #### Vim resources
 
@@ -278,3 +293,4 @@ You can also cut and paste using `d` and `y` directly (e.g. `dw` cuts a word); `
 
 Note that these guides insist that you can't use the arrow keys.
 You certainly can, though it's not considered hip (because vim is all about efficiency, and moving your hands from home position to the arrow keys is not efficient.)
+When you're ready to guzzle the coolaid, you can start using `j` and `k` for up/down, and `h` and `l` for left right (note that these keys are all on the resting "home-position" of your right hand, maing them fast to use).
