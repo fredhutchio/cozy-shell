@@ -25,6 +25,8 @@ Shell scripting is to first approximation just writing what you would write in t
 ```
 #! /bin/sh
 
+set -eu
+
 echo "Twinkle twinkle little *"
 ```
 
@@ -38,6 +40,11 @@ $
 ```
 
 As you can see, to execute a command in a shell script, you just put it on a line and it gets called.
+
+Now, what is this `set -eu` bit?
+Although the script will run without it, I strongly suggest that every script you write contain this line.
+Adding it will make your shell script fail and print an error message when either a command fails or a variable substitution did not work.
+That's what you would expect, right?
 
 
 ## Using predefined variables
@@ -152,7 +159,57 @@ For example:
 $ DATE=$(date); sleep 3; echo "3 seconds ago it was $DATE"
 ```
 
+So far we've been using variables in situations where the termination of the variable is clear, such as at the end of the string.
+This need not always be the case.
+For example, we might want to substitute in the value of `COLOR` as so:
 
-## Containing variable names
+```
+$ COLOR="blue"; echo "Let's paint the wall $COLORish"
+```
+
+Instead of getting the output "Let's paint the wall blueish", the shell interprets `COLORish` as its own variable, which isn't defined.
+
+The right syntax is `${VARIABLE}otherstuff`:
+
+```
+$ COLOR="blue"; echo "Let's paint the wall ${COLOR}ish"
+Let's paint the wall blueish
+$
+```
+
+
+## Return codes
+
+Return codes are how programs communicate if they succeeded or how they failed.
+They also form the basis of the conditional execution system in shell.
+In principle they go from 0 to 255, but you only need to know that 0 is success and anything else is a failure.
+This might sound backwards (and is indeed opposite of languages such as Python), but in shell there are lots more ways to fail than there are to succeed.
+We have heard of these concepts above in the discussion of `set -eu`.
+
+These concepts are used in AND lists and OR lists.
+
+* `cmd && other_cmd`: `other_cmd` will only be run if `cmd` succeeds
+* `cmd || other_cmd`: `other_cmd` will only be run if `cmd` fails
+
+
+Here it is in action:
+
+```
+$ ls gefilte_fish && echo "we have fish"
+ls: cannot access 'gefilte_fish': No such file or directory
+$  ls gefilte_fish || echo "we have no fish"
+ls: cannot access 'gefilte_fish': No such file or directory
+we have no fish
+```
+
+We only got the echo message in the second case because the `ls` command failed each time (because I didn't have a file named `gefilte_fish`).
+
+We can avoid the error message by using [`test`](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/test.html#top).
+
+```
+$ test -e gefilte_fish && echo "we have fish"
+$ test -e gefilte_fish || echo "we have no fish"
+we have no fish
+```
 
 
