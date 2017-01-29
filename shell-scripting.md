@@ -4,7 +4,7 @@ This post and talk is inspired by Ryan Tomayko's *Shell Hater's Handbook* [talk]
 
 The "puritanical" philosophy of shell scripting is that shell is *not* a general-purpose programming language.
 Shell is a programming language that is designed for assembling and running other commands.
-The fundamental abstraction of shell is a command.
+That's wonderful in a lot of cases, but it's not a great approach for others.
 
 
 ## When not to use shell
@@ -36,6 +36,8 @@ $ ./test.sh
 Twinkle twinkle little *
 $
 ```
+
+As you can see, to execute a command in a shell script, you just put it on a line and it gets called.
 
 
 ## Using predefined variables
@@ -85,7 +87,72 @@ $
 ```
 
 
-## Containing variable names
+## Command substitution
 
+We'd like to be able to use the result of one command as the input for another.
+We can do this using backticks `\``, but I prefer the more explicit `$( )` notation, which also nests properly.
+
+For example, say we have a nested directory structure like so:
+```
+$ tree
+.
+├── buckle
+│   └── shoe
+└── one
+    └── two
+```
+
+When we `ls`, we get the first level:
+
+```
+$ ls
+buckle  one
+```
+
+When we call `ls $(ls)`, we are calling `ls` on the result of calling `ls`, which as we saw above is `ls buckle shoe`:
+
+```
+$ ls $(ls)
+buckle:
+shoe
+
+one:
+two
+```
+
+
+## Defining variables
+
+You know now that variables are there to store strings for later substitution.
+You define them like so:
+
+```
+color="chicken"
+```
+
+It's common to use all caps for shell variables:
+
+```
+COLOR="chicken"
+```
+
+which means that you won't confuse them with commands, though you don't have to follow that convention.
+
+Now we can use the variable:
+
+```
+$ COLOR="chicken"; echo "Roses are red, violets are $COLOR"
+Roses are red, violets are chicken
+```
+
+It's common to use set variables to the value of commands.
+For example:
+
+```
+$ DATE=$(date); sleep 3; echo "3 seconds ago it was $DATE"
+```
+
+
+## Containing variable names
 
 
