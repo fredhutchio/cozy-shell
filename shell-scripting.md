@@ -205,6 +205,7 @@ we have no fish
 We only got the echo message in the second case because the `ls` command failed each time (because I didn't have a file named `gefilte_fish`).
 
 We can avoid the error message by using [`test`](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/test.html#top).
+Here `test -e` tests for the existence of a file.
 
 ```
 $ test -e gefilte_fish && echo "we have fish"
@@ -212,4 +213,84 @@ $ test -e gefilte_fish || echo "we have no fish"
 we have no fish
 ```
 
+Here are some arguments to `test`:
 
+* `-e pathname`: `pathname` is valid entry (directory, file, etc)
+* `-n string`: string is non-empty
+* `-z string`: string is empty
+* `string1 = string2`: `string1` is identical to `string2`
+* `string1 != string2`: `string1` is different than `string2`
+* `i -eq j`: integer `i` is equal to `j`
+* `i -ne j`: integer `i` is not equal to `j`
+* `!` at the beginning negates what occurs to the right
+
+The `!` works like so:
+
+```
+$ test ! -e gefilte_fish && echo "we have no fish"
+we have no fish
+```
+
+You can use curly braces to delimit a compound statement:
+
+```
+$ test ! -e gefilte_fish && {
+  echo "whitefish, pike, and carp"
+  echo "are used to make gefilte fish"
+}
+```
+
+You may be asking, *why would I do this, rather than use a regular if statement?*
+Indeed, shell does have an if statement, which we'll cover next, but Puritans realize that this form keeps with the shell philosophy of assembling and executing commands.
+
+
+## [Control flow](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_09_04)
+
+We can rewrite our example above using an if statement:
+
+```
+$ if test -e gefilte_fish
+then
+  echo "we have fish"
+else
+  echo "we have no fish"
+fi
+```
+
+I really want to emphasize that the "condition" of the if command (here a `test` statement) is a command, and we evaluate the subsequent statements based on the return status of that command.
+After all, this is shell scripting, which is based on the results of running commands!
+
+Now, to confuse things, shell introduces bracket notation, which is actually short-hand for a `test` call.
+This makes it look like shell is a typical programming language:
+
+```
+$ if [ -e gefilte_fish ]
+then
+  echo "we have fish"
+else
+  echo "we have no fish"
+fi
+```
+
+but in fact, `[` is just equivalent to calling `test` (if you don't believe me, try `man [`).
+It's just more annoying, because you have to remember that trailing `]`.
+
+There's also a while loop:
+
+```
+while test ! -e gefilte_fish
+do
+  echo "What, still no gefilte fish?"
+  sleep 1
+done
+```
+
+There's also a for loop, which I use all the time.
+The following script uses [imagemagick](https://www.imagemagick.org/)'s `convert` command to convert all `.jpg` files in the current directory to PNGs.
+
+```
+for i in *.jpg
+do
+  convert $i $i.png
+done
+```
