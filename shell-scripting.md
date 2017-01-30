@@ -164,16 +164,16 @@ This need not always be the case.
 For example, we might want to substitute in the value of `COLOR` as so:
 
 ```
-$ COLOR="blue"; echo "Let's paint the wall $COLORish"
+$ COLOR="blue"; echo "Let's paint the house $COLORish"
 ```
 
-Instead of getting the output "Let's paint the wall blueish", the shell interprets `COLORish` as its own variable, which isn't defined.
+Instead of getting the output "Let's paint the house blueish", the shell interprets `COLORish` as its own variable, which isn't defined.
 
 The right syntax is `${VARIABLE}otherstuff`:
 
 ```
-$ COLOR="blue"; echo "Let's paint the wall ${COLOR}ish"
-Let's paint the wall blueish
+$ COLOR="blue"; echo "Let's paint the house ${COLOR}ish"
+Let's paint the house blueish
 $
 ```
 
