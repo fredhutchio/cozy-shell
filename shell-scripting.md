@@ -4,7 +4,7 @@ This post and talk is inspired by Ryan Tomayko's *Shell Hater's Handbook* [talk]
 
 The "puritanical" philosophy of shell scripting is that shell is *not* a general-purpose programming language.
 Shell is a programming language that is designed for assembling and running other commands.
-That's wonderful in a lot of cases, but it's not a great approach for others.
+That's wonderful for a specific set of tasks.
 
 
 ## When not to use shell
@@ -151,8 +151,8 @@ Now we can use the variable:
 $ COLOR="chicken"; echo "Roses are red, violets are $COLOR"
 Roses are red, violets are chicken
 ```
-
-It's common to use set variables to the value of commands.
+(I snuck in a semicolon here, which allows us to execute several commands on a single line.)
+It's common to set variables to the output of commands.
 For example:
 
 ```
@@ -294,3 +294,37 @@ do
   convert $i $i.png
 done
 ```
+
+## The tiniest bit of `sed`
+
+The use of `sed` is a heresy.
+If you need to do serious string manipulation, it's time for a general-purpose programming language.
+But, if you don't mind wearing that scarlet letter around now and again, it can be handy in a pinch.
+
+The command `sed` is short for stream editor.
+It enables editing of streams of characters.
+One related example that you might know about already is piping output of one command through `grep` to filter the results.
+
+Here we look at processes happening on the system that contain the string `watchdog`.
+
+```
+ps aux | grep watchdog
+```
+
+Now, say we prefer cats over dogs.
+We can replace every occurrence of dog with cat in this example like so:
+
+```
+ps aux | sed "s/dog/cat/" | grep watchcat
+```
+
+Protip: you can use any character for the delimiter of the regular expression, for example here `#`:
+
+```
+ps aux | sed "s#dog#cat#" | grep watchcat
+```
+
+which can be very handy if you want to replace strings that have slashes in them.
+
+
+
