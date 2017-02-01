@@ -1,20 +1,20 @@
 # Puritanical shell scripting
 
-This post and talk is inspired by Ryan Tomayko's *Shell Hater's Handbook* [talk](http://confreaks.tv/videos/gogaruco2010-the-shell-hater-s-handbook) and [manual](http://shellhaters.org/) to the shell.
+This post and talk are inspired by Ryan Tomayko's [talk](http://confreaks.tv/videos/gogaruco2010-the-shell-hater-s-handbook) *The Shell Hater's Handbook*.
 
 The "puritanical" philosophy of shell scripting is that shell is *not* a general-purpose programming language.
 Shell is a programming language that is designed for assembling and running other commands.
-That's wonderful for a specific set of tasks.
-
-
-## When not to use shell
-
-Shell, along with the associated utilities such as sed and awk, is a very powerful programming language.
-Variants such as bash make this even more powerful, adding arrays and algebraic evaluation.
+Use it for this task, and this task only.
 
 Puritans know that if you need something more than composition of commands, it's time to reach for a more suitable programming language such as Python.
 Python will be able to handle your needs as they expand and become more complex.
+
+We will be describing POSIX shell, which a standardized set of commands that are available in any modern standards-compliant shell such as `bash`, `zsh`, and `dash`.
+Note that bash adds lots of features on top of the POSIX standard, such as arrays, but again if you are feeling the need for these features my opinion is that a more general-purpose programming language is a better choice.
 Nevertheless, shell scripts are very handy and a great tool.
+
+The best reference manual for POSIX shell is [this handbook](http://shellhaters.org/), which indexes directly into the POSIX documentation.
+For a more introductory perspective, try [Classic Shell Scripting](http://shop.oreilly.com/product/9780596005955.do) by Robbins and Beebe (you *may* be able to find a free PDF of this book using your search engine).
 
 
 ## Your first shell script
@@ -97,7 +97,7 @@ $
 ## Command substitution
 
 We'd like to be able to use the result of one command as the input for another.
-We can do this using backticks `\``, but I prefer the more explicit `$( )` notation, which also nests properly.
+We can do this using backticks (i.e. wrapping your command in \`'s), but I prefer the more explicit `$( )` notation, which also nests properly.
 
 For example, say we have a nested directory structure like so:
 ```
