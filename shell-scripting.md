@@ -295,11 +295,12 @@ do
 done
 ```
 
+
 ## The tiniest bit of `sed`
 
 The use of `sed` is a heresy.
 If you need to do serious string manipulation, it's time for a general-purpose programming language.
-But, if you don't mind wearing that scarlet letter around now and again, it can be handy in a pinch.
+But, if you don't mind hanging out in the pillory now and again, it can be handy in a pinch.
 
 The command `sed` is short for stream editor.
 It enables editing of streams of characters.
@@ -326,5 +327,77 @@ ps aux | sed "s#dog#cat#" | grep watchcat
 
 which can be very handy if you want to replace strings that have slashes in them.
 
+
+## Functions
+
+Shell has functions.
+It's mostly important to be able to recognize them so that you can punish the blaspheming author.
+
+```
+$ ldo () {
+    $1 "$(ls -t | head -n 1)"
+}
+```
+
+Actually, this one is pretty handy.
+`$1` is the first argument.
+So this function executes the first argument of the command on the result of running `ls -t | head -n 1`, which is the most recently touched file.
+Might be handy for your `.bashrc` or `.zshrc` file.
+
+As you might expect, `$2` is the second argument, `$3` the third, etc.
+You might not expect that `$@` is all of the arguments.
+Have fun!
+
+
+## Doing lots of things
+
+Computers these days have lots of cores, which means that they can do lots of useful things at once.
+In this section we'll see how to do several useless things at once.
+
+First let's write a function that reads off the first four lines of a manual page, slowly.
+
+```
+$ read_manual () {
+    for i in $(man $1 | head -n 4)
+    do
+        echo $1: $i
+        sleep 1
+    done
+}
+$
+}
+```
+
+Perhaps you already know that adding a trailing `&` after a command will make it run in the background.
+For example, we could run:
+
+```
+read_manual bash &
+```
+
+Now if we wanted to spawn a bunch of these "jobs" we could make a loop like:
+
+```
+for i in bash less head
+do
+   read_manual $i &
+done
+
+echo "***** DONE READING *******"
+```
+
+There's actually kind of a "bug" here, which is that the script announces that it's done before the jobs actually terminate.
+Hence, `wait`, which waits until all of the subprocesses finish to continue.
+
+```
+for i in bash less head
+do
+   read_manual $i &
+done
+
+wait
+
+echo "***** DONE READING *******"
+```
 
 
