@@ -30,11 +30,11 @@ set -eu
 echo "Twinkle twinkle little *"
 ```
 
-Save this in `test.sh` and make it executable using `chmod +x test.sh`.
+Save this in `script.sh` and make it executable using `chmod +x script.sh`.
 Now we can execute it:
 
 ```
-$ ./test.sh
+$ ./script.sh
 Twinkle twinkle little *
 $
 ```
@@ -279,7 +279,7 @@ It's just more annoying, because you have to remember that trailing `]`.
 There's also a while loop:
 
 ```
-while test ! -e gefilte_fish
+$ while test ! -e gefilte_fish
 do
   echo "What, still no gefilte fish?"
   sleep 1
@@ -429,18 +429,47 @@ A better strategy is...
 
 GNU Parallel is a general tool for running lots of things at once quite conveniently.
 It has a rather daunting [tutorial](https://www.gnu.org/software/parallel/parallel_tutorial.html) if you want a deep dive.
-Also, if some neckbeard says to use `xargs`, use Parallel instead-- it's a lot more user friendly.
+The author has also made [videos])https://www.youtube.com/playlist?list=PL284C9FF2488BC6D1).
+Also, if some neckbeard says to use `xargs`, I suggest using Parallel instead, as it's more user-friendly and flexible.
 
-Let's say we have three files
+Let's say we have a bunch of files that we want to compress with gzip.
+Just for the demonstration, we can make those files like so (`seq 100` just spits out the numbers from 1 to 99):
+
 ```
-$ touch x1 x2 x3
-$ ls x* | parallel gzip                                                                                                                  1 ↵
-$ ls
-x1.gz  x2.gz  x3.gz
-$ ls * | parallel mv {} {.}.fun.gz
-$ ls
-x1.fun.gz  x2.fun.gz  x3.fun.gz
-$
+for i in $(seq 100)
+do
+    echo "hi" > x$i
+done
 ```
 
+We can gzip them all like so:
 
+```
+$ ls x* | parallel gzip
+```
+
+This invocation of `parallel` just applies `gzip` to every file returned by `ls x*`.
+You might say, that's fine, but I could have just done `gzip x*` would have done the same thing.
+Yes, but this type of command is definitely strictly more general.
+
+For example, let's say that we want to rename each file from something like `x1.gz` to x1.fun.gz`.
+We could write a for loop to do this, or we could do the following:
+
+```
+$ ls x*.gz | parallel mv {} {.}.fun.gz
+```
+
+In this invocation, `{}` is the item that gets passed to `parallel`, while `{.}` is that original file but without the suffix.
+So, if `parallel` was to get `x1.gz`, then `{}` is `x1.gz` again, while `{.}` is `x1`.
+
+Now, in the previous section I described how the loop-and-start-things-in-background strategy has the problem that it will start all the jobs at once which may overwhelm your machine.
+This is where the `-j` or `--jobs` flag comes in.
+This will limit execution to a certain number of tasks at once.
+
+We can see this in this example, which just echoes the name of the run and sleeps for two seconds.
+
+```
+$ seq 10 | parallel -j2 "echo run{}; sleep 2"
+```
+
+It only echoes `run1` and `run2` together, then `run3` and `run4` together, etc, showing that it's only executing two at a time.
