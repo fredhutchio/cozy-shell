@@ -40,6 +40,7 @@ $
 ```
 
 As you can see, to execute a command in a shell script, you just put it on a line and it gets called.
+[ *Important note:* we're using a `$` at the beginning of a line to denote your shell prompt. You shouldn't type this in! ]
 
 Now, what is this `set -eu` bit?
 Although the script will run without it, I strongly suggest that every script you write contain this line.
@@ -331,7 +332,7 @@ which can be very handy if you want to replace strings that have slashes in them
 ## Functions
 
 Shell has functions.
-It's mostly important to be able to recognize them so that you can punish the blaspheming author.
+The syntax is a little strange, in which the function is declared just by putting `()` after the name of the new function, and the variables are processed using special variables such as `$1`.
 
 ```
 $ ldo () {
@@ -349,6 +350,26 @@ You might not expect that `$@` is all of the arguments.
 Have fun!
 
 
+## Command line arguments
+
+Sometimes it's nice to be able to specify arguments to your script.
+This is done just like for functions, with the same special variables `$1` and so on.
+Note that `$#` is the number of arguments, scripts often start with something like:
+
+```
+test $# -lt 2 && {
+    echo "usage: $0 fasta_file output_directory"
+    exit
+}
+
+fasta_file=$1
+output_directory=$2
+```
+
+this checks that we have the right number of arguments and complains if we don't get them, then renames them something more reasonable.
+Note that `$0` is the name of the script.
+
+
 ## Doing lots of things
 
 Computers these days have lots of cores, which means that they can do lots of useful things at once.
@@ -363,8 +384,6 @@ $ read_manual () {
         echo $1: $i
         sleep 1
     done
-}
-$
 }
 ```
 
@@ -383,7 +402,7 @@ do
    read_manual $i &
 done
 
-echo "***** DONE READING *******"
+echo "DONE"
 ```
 
 There's actually kind of a "bug" here, which is that the script announces that it's done before the jobs actually terminate.
@@ -397,7 +416,31 @@ done
 
 wait
 
-echo "***** DONE READING *******"
+echo "DONE"
+```
+
+This works, but it's not so super great.
+For example, let's say that we have 10,000 files to loop through and process.
+This looping strategy will start running all 10,000 tasks at once, which may bring your machine to a halt.
+A better strategy is...
+
+
+### GNU Parallel
+
+GNU Parallel is a general tool for running lots of things at once quite conveniently.
+It has a rather daunting [tutorial](https://www.gnu.org/software/parallel/parallel_tutorial.html) if you want a deep dive.
+Also, if some neckbeard says to use `xargs`, use Parallel instead-- it's a lot more user friendly.
+
+Let's say we have three files
+```
+$ touch x1 x2 x3
+$ ls x* | parallel gzip                                                                                                                  1 ↵
+$ ls
+x1.gz  x2.gz  x3.gz
+$ ls * | parallel mv {} {.}.fun.gz
+$ ls
+x1.fun.gz  x2.fun.gz  x3.fun.gz
+$
 ```
 
 
