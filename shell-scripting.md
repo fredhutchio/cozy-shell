@@ -346,8 +346,15 @@ So this function executes the first argument of the command on the result of run
 Might be handy for your `.bashrc` or `.zshrc` file.
 
 As you might expect, `$2` is the second argument, `$3` the third, etc.
-You might not expect that `$@` is all of the arguments.
-Have fun!
+The variable `$@` is all of the arguments.
+
+Just call a function like you would a regular shell command, e.g.
+
+```
+ldo head
+```
+
+will run `head` on the most recently modified file.
 
 
 ## Command line arguments
