@@ -1,4 +1,9 @@
-# Puritanical shell scripting
+---
+layout: post
+title: "Puritanical shell scripting"
+category: articles
+tags: shell intermediate
+---
 
 This post and talk are inspired by Ryan Tomayko's [talk](http://confreaks.tv/videos/gogaruco2010-the-shell-hater-s-handbook) *The Shell Hater's Handbook*.
 
@@ -15,6 +20,18 @@ Nevertheless, shell scripts are very handy and a great tool.
 
 The best reference manual for POSIX shell is [this handbook](http://shellhaters.org/), which indexes directly into the POSIX documentation.
 For a more introductory perspective, try [Classic Shell Scripting](http://shop.oreilly.com/product/9780596005955.do) by Robbins and Beebe (you *may* be able to find a free PDF of this book using your search engine).
+
+* [Your first shell script](#your-first-shell-script)
+* [Using predefined variables](#using-predefined-variables)
+* [Quoting](#quoting)
+* [Command substitution](#command-substitution)
+* [Defining variables](#defining-variables)
+* [Return codes](#return-codes)
+* [Control flow](#control-flow)
+* [The tiniest bit of `sed`](#the-tiniest-bit-of-sed)
+* [Functions](#functions)
+* [Command line arguments](#command-line-arguments)
+* [Doing lots of things](#doing-lots-of-things)
 
 
 ## Your first shell script
