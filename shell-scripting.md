@@ -40,12 +40,14 @@ $
 ```
 
 As you can see, to execute a command in a shell script, you just put it on a line and it gets called.
-[ *Important note:* we're using a `$` at the beginning of a line to denote your shell prompt. You shouldn't type this in! ]
+[ *Important note:* we're using a `$` at the beginning of a line to denote your shell prompt. You shouldn't type this in! I'll only use it when showing output. ]
 
 Now, what is this `set -eu` bit?
 Although the script will run without it, I strongly suggest that every script you write contain this line.
 Adding it will make your shell script fail and print an error message when either a command fails or a variable substitution did not work.
 That's what you would expect, right?
+
+You might also consider `set -eux`, which prints every executed line.
 
 
 ## Using predefined variables
@@ -69,7 +71,7 @@ If you don't know about quoting, there is a key point here: the quotes make the 
 If instead we tried
 
 ```
-$ echo Twinkle twinkle little *
+echo Twinkle twinkle little *
 ```
 
 this echoes `Twinkle twinkle little` with all of the other files I have in my directory, because `*` is a pattern that [matches all characters](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_13).
@@ -157,7 +159,7 @@ It's common to set variables to the output of commands.
 For example:
 
 ```
-$ DATE=$(date); sleep 3; echo "3 seconds ago it was $DATE"
+DATE=$(date); sleep 3; echo "3 seconds ago it was $DATE"
 ```
 
 So far we've been using variables in situations where the termination of the variable is clear, such as at the end of the string.
@@ -165,7 +167,7 @@ This need not always be the case.
 For example, we might want to substitute in the value of `COLOR` as so:
 
 ```
-$ COLOR="blue"; echo "Let's paint the house $COLORish"
+COLOR="blue"; echo "Let's paint the house $COLORish"
 ```
 
 Instead of getting the output "Let's paint the house blueish", the shell interprets `COLORish` as its own variable, which isn't defined.
@@ -235,7 +237,7 @@ we have no fish
 You can use curly braces to delimit a compound statement:
 
 ```
-$ test ! -e gefilte_fish && {
+test ! -e gefilte_fish && {
   echo "whitefish, pike, and carp"
   echo "are used to make gefilte fish"
 }
@@ -250,7 +252,7 @@ Indeed, shell does have an if statement, which we'll cover next, but Puritans re
 We can rewrite our example above using an if statement:
 
 ```
-$ if test -e gefilte_fish
+if test -e gefilte_fish
 then
   echo "we have fish"
 else
@@ -265,7 +267,7 @@ Now, to confuse things, shell introduces bracket notation, which is actually sho
 This makes it look like shell is a typical programming language:
 
 ```
-$ if [ -e gefilte_fish ]
+if [ -e gefilte_fish ]
 then
   echo "we have fish"
 else
@@ -279,7 +281,7 @@ It's just more annoying, because you have to remember that trailing `]`.
 There's also a while loop:
 
 ```
-$ while test ! -e gefilte_fish
+while test ! -e gefilte_fish
 do
   echo "What, still no gefilte fish?"
   sleep 1
@@ -299,7 +301,7 @@ done
 
 ## The tiniest bit of `sed`
 
-The use of `sed` is a heresy.
+The use of `sed` is heresy.
 If you need to do serious string manipulation, it's time for a general-purpose programming language.
 But, if you don't mind hanging out in the pillory now and again, it can be handy in a pinch.
 
@@ -335,7 +337,7 @@ Shell has functions.
 The syntax is a little strange, in which the function is declared just by putting `()` after the name of the new function, and the variables are processed using special variables such as `$1`.
 
 ```
-$ ldo () {
+ldo () {
     $1 "$(ls -t | head -n 1)"
 }
 ```
@@ -385,7 +387,7 @@ In this section we'll see how to do several useless things at once.
 First let's write a function that reads off the first four lines of a manual page, slowly.
 
 ```
-$ read_manual () {
+read_manual () {
     for i in $(man $1 | head -n 4)
     do
         echo $1: $i
@@ -436,7 +438,7 @@ A better strategy is...
 
 GNU Parallel is a general tool for running lots of things at once quite conveniently.
 It has a rather daunting [tutorial](https://www.gnu.org/software/parallel/parallel_tutorial.html) if you want a deep dive.
-The author has also made [videos])https://www.youtube.com/playlist?list=PL284C9FF2488BC6D1).
+The author has also made [videos](https://www.youtube.com/playlist?list=PL284C9FF2488BC6D1).
 Also, if some neckbeard says to use `xargs`, I suggest using Parallel instead, as it's more user-friendly and flexible.
 
 Let's say we have a bunch of files that we want to compress with gzip.
@@ -452,7 +454,7 @@ done
 We can gzip them all like so:
 
 ```
-$ ls x* | parallel gzip
+ls x* | parallel gzip
 ```
 
 This invocation of `parallel` just applies `gzip` to every file returned by `ls x*`.
@@ -463,7 +465,7 @@ For example, let's say that we want to rename each file from something like `x1.
 We could write a for loop to do this, or we could do the following:
 
 ```
-$ ls x*.gz | parallel mv {} {.}.fun.gz
+ls x*.gz | parallel mv {} {.}.fun.gz
 ```
 
 In this invocation, `{}` is the item that gets passed to `parallel`, while `{.}` is that original file but without the suffix.
@@ -476,7 +478,15 @@ This will limit execution to a certain number of tasks at once.
 We can see this in this example, which just echoes the name of the run and sleeps for two seconds.
 
 ```
-$ seq 10 | parallel -j2 "echo run{}; sleep 2"
+seq 10 | parallel -j2 "echo run{}; sleep 2"
 ```
 
 It only echoes `run1` and `run2` together, then `run3` and `run4` together, etc, showing that it's only executing two at a time.
+
+Perhaps the simplest way to run `parallel` is just to put all the commands you want to run into a file and run them like so:
+
+```
+parallel < to-parallel.sh
+```
+
+which is the same as `cat to-parallel.sh | parallel` but [keeps the neckbeards happy](https://en.wikipedia.org/wiki/Cat_(Unix)#Useless_use_of_cat).
